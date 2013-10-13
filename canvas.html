@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en" ng-app>
+<head>
+    <title>Wish list</title>
+    <!-- Wix JS SDK
+     -->
+<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript">
+
+    var lineWidth = 4;
+
+    var _head;
+
+    var _smile;
+
+    function repaint(canvasId) {
+        fillRect(canvasId, "white");
+        if (_head == "rect") {
+            rect(canvasId, "white");
+        } else if (_head == "circle") {
+            circle(canvasId, "white");
+        }
+//
+        if (_smile == "up") {
+            smile(canvasId, true);
+        } else if (_smile == "down") {
+            smile(canvasId, false);
+        }
+    }
+
+    $(document).ready(function(){
+        rect("head1", "white");
+        circle("head2", "white");
+        smile("smile1", false);
+        smile("smile2", true);
+        //circleyes("eyes1");
+    });
+
+    $(document).ready(function () {
+        $("input[name=head]:radio").change(function () {
+            if ($("#rect").prop("checked")) {
+                _head = "rect";
+            } else if ($("#circle").prop("checked")) {
+                _head = "circle";
+            }
+            repaint("result");
+        })
+    });
+
+    $(document).ready(function () {
+        $("input[name=smile]:radio").change(function () {
+            if ($("#up").prop("checked")) {
+                _smile = "up";
+            } else if ($("#down").prop("checked")) {
+                _smile = "down";
+            }
+
+            repaint("result");
+        })
+    });
+
+    function rect(canvasId, fillStyle) {
+        var canvas = document.getElementById(canvasId);
+        var context = canvas.getContext("2d");
+        //context.fillRect(0, 0, 100, 100);
+        context.beginPath();
+        context.rect(2, 2, 96, 96);
+
+        context.fillStyle = fillStyle;
+        context.fill();
+
+        context.lineWidth = lineWidth;
+        context.stroke();
+    }
+
+    function fillRect(canvasId, fillStyle) {
+        var canvas = document.getElementById(canvasId);
+        var context = canvas.getContext("2d");
+        context.fillStyle = fillStyle;
+        context.fillRect(0, 0, 100, 100);
+
+    }
+
+    function circle(canvasId, fillStyle) {
+        var canvas = document.getElementById(canvasId);
+        var context = canvas.getContext('2d');
+        var centerX = canvas.width / 2;
+        var centerY = canvas.height / 2;
+        var radius = 46;
+
+        context.beginPath();
+        context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+        context.fillStyle = fillStyle;
+        context.fill();
+        context.lineWidth = lineWidth;
+        context.strokeStyle = '#000000';
+        context.stroke();
+    }
+
+    function smile(canvasId, up ) {
+        var canvas = document.getElementById(canvasId);
+
+        var context = canvas.getContext('2d');
+
+        var centerX = canvas.width / 2;
+        var centerY = canvas.height / 2 + (up != true ? 10 : 30);
+
+        context.beginPath();
+        context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+        context.fillStyle = fillStyle;
+        context.fill();
+        context.lineWidth = lineWidth;
+        context.strokeStyle = '#000000';
+        context.stroke();
+    }
+
+//    function circleyes(canvasId) {
+//        var canvas = document.getElementById(canvasId);
+//
+//        var context = canvas.getContext('2d');
+//
+//        var centerX = canvas.width / 3;
+//        var centerY = canvas.height / 3;// + (up != true ? 10 : 30);
+//
+//        context.beginPath();
+//        context.arc(centerX, centerY, 3, 0, 2 * Math.PI, false);
+//        context.arc(100 - centerX, centerY, 3, 0, 2 * Math.PI, false);
+//        context.fillStyle = fillStyle;
+//        context.fill();
+//        context.lineWidth = lineWidth;
+//        context.strokeStyle = '#000000';
+//        context.stroke();
+//    }
+
+
+</script>
+
+</head>
+<body>
+<form action="?index/save" method="post">
+
+    <div>
+        Guest
+    </div>
+    <div>
+        <input name="user" required>
+    </div>
+    <div>
+        Comment
+    </div>
+    <div>
+        <textarea name="data" required></textarea>
+    </div>
+    <div>
+        Head of you avatar:
+    </div>
+    <div>
+        <input type="radio" name="head" value="rect" id="rect"/>
+        <canvas width="100" height="100" id="head1"></canvas>
+        <input type="radio" name="head" value="circle" id="circle">
+        <canvas width="100" height="100" id="head2"></canvas>
+    </div>
+
+    <div>
+        <input type="radio" name="smile" value="up" id="up">
+        <canvas width="100" height="100" id="smile1"></canvas>
+        <input type="radio" name="smile" value="down" id="down">
+        <canvas width="100" height="100" id="smile2"></canvas>
+    </div>
+
+    <div>
+        <input type="radio" name="eyes" value="eyescircle" id="eyescircle">
+        <canvas width="100" height="100" id="eyes1"></canvas>
+        <input type="radio" name="eyes" value="eyesrect" id="eyesrect">
+        <canvas width="100" height="100" id="eyes2"></canvas>
+    </div>
+
+
+    <canvas width="100" height="100" id="result"></canvas>
+    <input type="submit" value="Comment"/>
+</form>
+
+
+</body>
+</html>
